@@ -1,0 +1,25 @@
+name: Build and Test with clang-cl
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install LLVM and Clang
+      uses: KyleMayes/install-llvm-action@v2
+      with:
+          version: "17.0.6"
+          env: true
+
+    - name: Build with clang-cl
+      run: |
+        clang-cl /EHsc /Fe:main.exe main.cpp
+
+    - name: Run executable
+      run: |
+        .\main.exe
